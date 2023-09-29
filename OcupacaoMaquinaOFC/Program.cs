@@ -1,4 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using OcupacaoMaquinaOFC.Models;
+using Microsoft.Extensions.DependencyInjection;
+using OcupacaoMaquinaOFC.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<OcupacaoMaquinaOFCContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("OcupacaoMaquinaOFCContext") ?? throw new InvalidOperationException("Connection string 'OcupacaoMaquinaOFCContext' not found.")));
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OcupacaoMaquinaOFC.Models;
+using System.Text.Encodings.Web;
 
 namespace OcupacaoMaquinaOFC.Controllers;
 

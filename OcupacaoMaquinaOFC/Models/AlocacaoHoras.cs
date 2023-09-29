@@ -1,4 +1,6 @@
-﻿namespace OcupacaoMaquinaOFC.Models;
+﻿using MessagePack;
+
+namespace OcupacaoMaquinaOFC.Models;
 
 public class AlocacaoHoras
 {
@@ -9,6 +11,7 @@ public class AlocacaoHoras
         this.projeto = projeto;
     }
 
+ 
     public int qtdHoraPorMaquina { get; set; }
     public Maquina maquina { get; set; }
     public Projeto projeto { get; set; }

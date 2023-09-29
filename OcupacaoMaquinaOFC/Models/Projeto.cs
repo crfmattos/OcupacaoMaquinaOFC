@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace OcupacaoMaquinaOFC.Models;
 public class Projeto
 {
@@ -9,6 +11,7 @@ public class Projeto
         this.lider = lider;
     }
 
+    [Key]
     public string id { get; set; }
     public string dataInicio { get; set; }
     public string dataConclusao { get; set; }
