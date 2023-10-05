@@ -3,6 +3,10 @@ using System.ComponentModel.DataAnnotations;
 namespace OcupacaoMaquinaOFC.Models;
 public class Projeto
 {
+    public Projeto()
+    {
+    }
+
     public Projeto(string id, string dataInicio, string dataConclusao, string lider)
     {
         this.id = id;

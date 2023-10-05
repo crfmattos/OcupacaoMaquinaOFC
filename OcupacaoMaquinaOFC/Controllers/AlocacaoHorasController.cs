@@ -1,147 +1,163 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using OcupacaoMaquinaOFC.Data;
 using OcupacaoMaquinaOFC.Models;
-using System.Text.Encodings.Web;
 
-namespace OcupacaoMaquinaOFC.Controllers;
-
-public class AlocacaoHorasController : Controller
+namespace OcupacaoMaquinaOFC.Controllers
 {
-    
-
-    List<AlocacaoHoras> CriarListaAlocacoes()
+    public class AlocacaoHorasController : Controller
     {
-        return Dados.LISTADEHORAS;
-    }
+        private readonly OcupacaoMaquinaOFCContext _context;
 
-    void PopularBancoDeHoras()
-    {
-        Dados.bancoDeHoras.AddRange(CriarListaAlocacoes());
-    }
-
-    int CalcularHoraMaquina(Maquina maquina)
-    {
-        int somaHora = Dados.bancoDeHoras.Where(m => m.maquina == maquina).Sum(hora => hora.qtdHoraPorMaquina);
-        return somaHora;
-    }
-
-    List<AlocacaoHoras> FiltrarHorasPorMaquina(Maquina maquina)
-    {
-        List<AlocacaoHoras> HorasFiltradas = Dados.bancoDeHoras.Where((horaPercorrida) => horaPercorrida.maquina == maquina).ToList();
-        return HorasFiltradas;
-    }
-
-    List<double> ListarPorcentagensFiltradas(List<AlocacaoHoras> horasFiltradas)
-    {
-        List<double> porcentagens = new();
-        foreach (var hora in horasFiltradas)
+        public AlocacaoHorasController(OcupacaoMaquinaOFCContext context)
         {
-            porcentagens.Add(hora.qtdHoraPorMaquina / hora.maquina.limiteHoras);
+            _context = context;
         }
-        return porcentagens;
-    }
 
-    int SomarHorasDeTodasMaquinas()
-    {
-        int horasTotais = Dados.bancoDeHoras.Sum(b => b.qtdHoraPorMaquina);
-        return horasTotais;
-    }
-
-    double CalcularOcupacaoMaquina(Maquina maquina)
-    {
-        double ocupacaoMaquina = FiltrarHorasPorMaquina(maquina).Sum(x => x.qtdHoraPorMaquina) / maquina.limiteHoras;
-        return ocupacaoMaquina * 100;
-
-    }
-
-    List<AlocacaoHoras> FiltrarPorProjeto(Projeto projeto)
-    {
-        List<AlocacaoHoras> projetosFiltrados = Dados.bancoDeHoras.Where((projetoPercorrido) => projetoPercorrido.projeto == projeto).ToList();
-        return projetosFiltrados;
-    }
-
-    double calcularValorHorasAlocadas(Maquina maquina)
-    {
-        List<AlocacaoHoras> alocacoesDaMaquina = FiltrarHorasPorMaquina(maquina);
-        int horasAlocadas = CalcularHoraMaquina(maquina);
-        double valorHora = maquina.calcularValorHora();
-        return horasAlocadas * valorHora;
-    }
-
-
-
-    // GET: AlocacaoHorasController
-    public ActionResult Index()
-    {
-        return View();
-    }
-
-    // GET: AlocacaoHorasController/Details/5
-    public ActionResult Details(int id)
-    {
-        return View();
-    }
-
-    // GET: AlocacaoHorasController/Create
-    public ActionResult Create()
-    {
-        return View();
-    }
-
-    // POST: AlocacaoHorasController/Create
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Create(IFormCollection collection)
-    {
-        try
+        // GET: AlocacaoHoras
+        public async Task<IActionResult> Index()
         {
-            return RedirectToAction(nameof(Index));
+              return _context.AlocacaoHoras != null ? 
+                          View(await _context.AlocacaoHoras.ToListAsync()) :
+                          Problem("Entity set 'OcupacaoMaquinaOFCContext.AlocacaoHoras'  is null.");
         }
-        catch
+
+        // GET: AlocacaoHoras/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || _context.AlocacaoHoras == null)
+            {
+                return NotFound();
+            }
+
+            var alocacaoHoras = await _context.AlocacaoHoras
+                .FirstOrDefaultAsync(m => m.qtdHoraPorMaquina == id);
+            if (alocacaoHoras == null)
+            {
+                return NotFound();
+            }
+
+            return View(alocacaoHoras);
+        }
+
+        // GET: AlocacaoHoras/Create
+        public IActionResult Create()
         {
             return View();
         }
-    }
 
-    // GET: AlocacaoHorasController/Edit/5
-    public ActionResult Edit(int id)
-    {
-        return View();
-    }
-
-    // POST: AlocacaoHorasController/Edit/5
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Edit(int id, IFormCollection collection)
-    {
-        try
+        // POST: AlocacaoHoras/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("qtdHoraPorMaquina")] AlocacaoHoras alocacaoHoras)
         {
+            if (ModelState.IsValid)
+            {
+                _context.Add(alocacaoHoras);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(alocacaoHoras);
+        }
+
+        // GET: AlocacaoHoras/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.AlocacaoHoras == null)
+            {
+                return NotFound();
+            }
+
+            var alocacaoHoras = await _context.AlocacaoHoras.FindAsync(id);
+            if (alocacaoHoras == null)
+            {
+                return NotFound();
+            }
+            return View(alocacaoHoras);
+        }
+
+        // POST: AlocacaoHoras/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("qtdHoraPorMaquina")] AlocacaoHoras alocacaoHoras)
+        {
+            if (id != alocacaoHoras.qtdHoraPorMaquina)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(alocacaoHoras);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AlocacaoHorasExists(alocacaoHoras.qtdHoraPorMaquina))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(alocacaoHoras);
+        }
+
+        // GET: AlocacaoHoras/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null || _context.AlocacaoHoras == null)
+            {
+                return NotFound();
+            }
+
+            var alocacaoHoras = await _context.AlocacaoHoras
+                .FirstOrDefaultAsync(m => m.qtdHoraPorMaquina == id);
+            if (alocacaoHoras == null)
+            {
+                return NotFound();
+            }
+
+            return View(alocacaoHoras);
+        }
+
+        // POST: AlocacaoHoras/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (_context.AlocacaoHoras == null)
+            {
+                return Problem("Entity set 'OcupacaoMaquinaOFCContext.AlocacaoHoras'  is null.");
+            }
+            var alocacaoHoras = await _context.AlocacaoHoras.FindAsync(id);
+            if (alocacaoHoras != null)
+            {
+                _context.AlocacaoHoras.Remove(alocacaoHoras);
+            }
+            
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        catch
-        {
-            return View();
-        }
-    }
 
-    // GET: AlocacaoHorasController/Delete/5
-    public ActionResult Delete(int id)
-    {
-        return View();
-    }
-
-    // POST: AlocacaoHorasController/Delete/5
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Delete(int id, IFormCollection collection)
-    {
-        try
+        private bool AlocacaoHorasExists(int id)
         {
-            return RedirectToAction(nameof(Index));
-        }
-        catch
-        {
-            return View();
+          return (_context.AlocacaoHoras?.Any(e => e.qtdHoraPorMaquina == id)).GetValueOrDefault();
         }
     }
 }

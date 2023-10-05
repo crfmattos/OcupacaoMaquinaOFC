@@ -3,6 +3,10 @@ using System.ComponentModel.DataAnnotations;
 namespace OcupacaoMaquinaOFC.Models;
 public class Maquina
 {
+    public Maquina()
+    {
+    }
+
     public Maquina(string nome, double limiteHoras, double valorMaquina)
     {
         this.nome = nome;

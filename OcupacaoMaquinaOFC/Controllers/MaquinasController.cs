@@ -12,6 +12,43 @@ namespace OcupacaoMaquinaOFC.Controllers
 {
     public class MaquinasController : Controller
     {
+
+        List<Maquina> CriarListaEquipamentos()
+        {
+            return Dados.LISTADEQUIPAMENTOS;
+        }
+
+
+        void PopularBancoDeMaquinas()
+        {
+            Dados.equipamentos.AddRange(CriarListaEquipamentos());
+        }
+
+        void CriarNovaMaquina(string nome, double limiteHoras, double valorMaquina)
+        {
+            Dados.equipamentos.Add(new Maquina(nome, limiteHoras, valorMaquina));
+
+            void CriarNovaMaquinaComInput()
+            {
+                Console.WriteLine("\nInsira os dados para cadastrar uma máquina abaixo:");
+                Console.Write("Nome: ");
+                string nome = Console.ReadLine();
+                Console.Write("Limite de horas da máquina: ");
+                double limiteHoras = Convert.ToDouble(Console.ReadLine());
+                Console.Write("Valor da máquina: ");
+                double valorMaquina = Convert.ToDouble(Console.ReadLine());
+                CriarNovaMaquina(nome, limiteHoras, valorMaquina);
+
+            }
+            void ExibirEquipamentos()
+            {
+                foreach (var equipamento in Dados.equipamentos)
+                {
+                    Console.WriteLine(equipamento.nome);
+                }
+            }
+        }
+
         private readonly OcupacaoMaquinaOFCContext _context;
 
         public MaquinasController(OcupacaoMaquinaOFCContext context)

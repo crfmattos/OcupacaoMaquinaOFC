@@ -17,5 +17,7 @@ namespace OcupacaoMaquinaOFC.Data
         public DbSet<OcupacaoMaquinaOFC.Models.Maquina> Maquina { get; set; } = default!;
 
         public DbSet<OcupacaoMaquinaOFC.Models.Projeto>? Projeto { get; set; }
+
+        public DbSet<OcupacaoMaquinaOFC.Models.AlocacaoHoras>? AlocacaoHoras { get; set; }
     }
 }

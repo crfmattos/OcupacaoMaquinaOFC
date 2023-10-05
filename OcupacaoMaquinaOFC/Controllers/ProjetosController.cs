@@ -10,16 +10,64 @@ using OcupacaoMaquinaOFC.Models;
 
 namespace OcupacaoMaquinaOFC.Controllers
 {
-    public class ProjetoesController : Controller
+    public class ProjetosController : Controller
     {
+
+        List<Projeto> CriarListaProjetos()
+        {
+            return Dados.LISTAINFORMACOESPROJETOS;
+        }
+
+        void PopularBancoDeProjetos()
+        {
+            Dados.projetos.AddRange(CriarListaProjetos());
+        }
+
+        void CriarNovoProjeto(string id, string dataInicio, string dataConclusao, string lider)
+        {
+            Dados.projetos.Add(new Projeto(id, dataInicio, dataConclusao, lider));
+        }
+
+        void CriarNovoProjetoComInput()
+        {
+            Console.WriteLine("\nInsira os dados para cadastrar um projeto abaixo:");
+            Console.Write("Id do projeto: ");
+            string id = Console.ReadLine();
+            Console.Write("Data de Início: ");
+            string dataInicio = Console.ReadLine();
+            Console.Write("Data de conclusão: ");
+            string dataConclusao = Console.ReadLine();
+            Console.Write("Líder de projeto: ");
+            string lider = Console.ReadLine();
+            CriarNovoProjeto(id, dataInicio, dataConclusao, lider);
+
+        }
+
+        void ExibirProjetos()
+        {
+            foreach (var projeto in Dados.projetos)
+            {
+                Console.WriteLine(projeto.id);
+            }
+        }
+
+        DateTime CalcularQtdDeMeses(DateTime data, int numeroDeMeses)
+        {
+
+
+            DateTime dataAtual = DateTime.Now;
+            DateTime dataSubtraida = data.AddMonths(-numeroDeMeses);
+            return dataSubtraida;
+        }
+
         private readonly OcupacaoMaquinaOFCContext _context;
 
-        public ProjetoesController(OcupacaoMaquinaOFCContext context)
+        public ProjetosController(OcupacaoMaquinaOFCContext context)
         {
             _context = context;
         }
 
-        // GET: Projetoes
+        // GET: Projetos
         public async Task<IActionResult> Index()
         {
               return _context.Projeto != null ? 
@@ -27,7 +75,7 @@ namespace OcupacaoMaquinaOFC.Controllers
                           Problem("Entity set 'OcupacaoMaquinaOFCContext.Projeto'  is null.");
         }
 
-        // GET: Projetoes/Details/5
+        // GET: Projetos/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.Projeto == null)
@@ -45,13 +93,13 @@ namespace OcupacaoMaquinaOFC.Controllers
             return View(projeto);
         }
 
-        // GET: Projetoes/Create
+        // GET: Projetos/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Projetoes/Create
+        // POST: Projetos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -67,7 +115,7 @@ namespace OcupacaoMaquinaOFC.Controllers
             return View(projeto);
         }
 
-        // GET: Projetoes/Edit/5
+        // GET: Projetos/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.Projeto == null)
@@ -83,7 +131,7 @@ namespace OcupacaoMaquinaOFC.Controllers
             return View(projeto);
         }
 
-        // POST: Projetoes/Edit/5
+        // POST: Projetos/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -118,7 +166,7 @@ namespace OcupacaoMaquinaOFC.Controllers
             return View(projeto);
         }
 
-        // GET: Projetoes/Delete/5
+        // GET: Projetos/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.Projeto == null)
@@ -136,7 +184,7 @@ namespace OcupacaoMaquinaOFC.Controllers
             return View(projeto);
         }
 
-        // POST: Projetoes/Delete/5
+        // POST: Projetos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
