@@ -15,50 +15,49 @@ namespace OcupacaoMaquinaOFC.Controllers
 
         List<Projeto> CriarListaProjetos()
         {
-            return Dados.LISTAINFORMACOESPROJETOS;
+            return SeedData.LISTAINFORMACOESPROJETOS;
         }
 
         void PopularBancoDeProjetos()
         {
-            Dados.projetos.AddRange(CriarListaProjetos());
+            SeedData.projetos.AddRange(CriarListaProjetos());
         }
 
-        void CriarNovoProjeto(string id, string dataInicio, string dataConclusao, string lider)
+        void CriarNovoProjeto(string id, DateTime dataInicio, DateTime dataConclusao, string lider)
         {
-            Dados.projetos.Add(new Projeto(id, dataInicio, dataConclusao, lider));
+            SeedData.projetos.Add(new Projeto(id, dataInicio, dataConclusao, lider));
         }
 
-        void CriarNovoProjetoComInput()
-        {
-            Console.WriteLine("\nInsira os dados para cadastrar um projeto abaixo:");
-            Console.Write("Id do projeto: ");
-            string id = Console.ReadLine();
-            Console.Write("Data de Início: ");
-            string dataInicio = Console.ReadLine();
-            Console.Write("Data de conclusão: ");
-            string dataConclusao = Console.ReadLine();
-            Console.Write("Líder de projeto: ");
-            string lider = Console.ReadLine();
-            CriarNovoProjeto(id, dataInicio, dataConclusao, lider);
+        //void CriarNovoProjetoComInput()
+        //{
+        //    Console.WriteLine("\nInsira os dados para cadastrar um projeto abaixo:");
+        //    Console.Write("Id do projeto: ");
+        //    string id = Console.ReadLine();
+        //    Console.Write("Data de Início: ");
+        //    string dataInicio = Console.ReadLine();
+        //    Console.Write("Data de conclusão: ");
+        //    string dataConclusao = Console.ReadLine();
+        //    Console.Write("Líder de projeto: ");
+        //    string lider = Console.ReadLine();
+        //    CriarNovoProjeto(id, dataInicio, dataConclusao, lider);
+        //}
 
-        }
+        //void ExibirProjetos()
+        //{
+        //    foreach (var projeto in SeedData.projetos)
+        //    {
+        //        Console.WriteLine(projeto.id);
+        //    }
+        //}
 
-        void ExibirProjetos()
-        {
-            foreach (var projeto in Dados.projetos)
-            {
-                Console.WriteLine(projeto.id);
-            }
-        }
-
-        DateTime CalcularQtdDeMeses(DateTime data, int numeroDeMeses)
-        {
+        //DateTime CalcularQtdDeMeses(DateTime data, int numeroDeMeses)
+        //{
 
 
-            DateTime dataAtual = DateTime.Now;
-            DateTime dataSubtraida = data.AddMonths(-numeroDeMeses);
-            return dataSubtraida;
-        }
+        //    DateTime dataAtual = DateTime.Now;
+        //    DateTime dataSubtraida = data.AddMonths(-numeroDeMeses);
+        //    return dataSubtraida;
+        //}
 
         private readonly OcupacaoMaquinaOFCContext _context;
 

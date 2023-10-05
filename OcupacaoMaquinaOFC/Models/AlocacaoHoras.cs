@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace OcupacaoMaquinaOFC.Models;
 
@@ -11,14 +12,16 @@ public class AlocacaoHoras
         this.projeto = new Projeto();
     }
 
-    public AlocacaoHoras(int qtdHoraPorMaquina, Maquina maquina, Projeto projeto)
+    public AlocacaoHoras(int id, int qtdHoraPorMaquina, Maquina maquina, Projeto projeto)
     {
+        this.id = id;
         this.qtdHoraPorMaquina = qtdHoraPorMaquina;
         this.maquina = maquina;
         this.projeto = projeto;
     }
 
     [Key]
+    public int id { get; set; }
     public int qtdHoraPorMaquina { get; set; }
     public Maquina maquina { get; set; }
     public Projeto projeto { get; set; }

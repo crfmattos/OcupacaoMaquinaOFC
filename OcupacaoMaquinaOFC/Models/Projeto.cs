@@ -7,7 +7,7 @@ public class Projeto
     {
     }
 
-    public Projeto(string id, string dataInicio, string dataConclusao, string lider)
+    public Projeto(string id, DateTime dataInicio, DateTime dataConclusao, string lider)
     {
         this.id = id;
         this.dataInicio = dataInicio;
@@ -17,8 +17,8 @@ public class Projeto
 
     [Key]
     public string id { get; set; }
-    public string dataInicio { get; set; }
-    public string dataConclusao { get; set; }
+    public DateTime dataInicio { get; set; }
+    public DateTime dataConclusao { get; set; }
     public string lider { get; set; }
     
 }

@@ -15,39 +15,44 @@ namespace OcupacaoMaquinaOFC.Controllers
 
         List<Maquina> CriarListaEquipamentos()
         {
-            return Dados.LISTADEQUIPAMENTOS;
+            return SeedData.LISTADEQUIPAMENTOS;
         }
 
 
         void PopularBancoDeMaquinas()
         {
-            Dados.equipamentos.AddRange(CriarListaEquipamentos());
+            SeedData.equipamentos.AddRange(CriarListaEquipamentos());
         }
 
         void CriarNovaMaquina(string nome, double limiteHoras, double valorMaquina)
         {
-            Dados.equipamentos.Add(new Maquina(nome, limiteHoras, valorMaquina));
+            SeedData.equipamentos.Add(new Maquina(nome, limiteHoras, valorMaquina));
 
-            void CriarNovaMaquinaComInput()
-            {
-                Console.WriteLine("\nInsira os dados para cadastrar uma máquina abaixo:");
-                Console.Write("Nome: ");
-                string nome = Console.ReadLine();
-                Console.Write("Limite de horas da máquina: ");
-                double limiteHoras = Convert.ToDouble(Console.ReadLine());
-                Console.Write("Valor da máquina: ");
-                double valorMaquina = Convert.ToDouble(Console.ReadLine());
-                CriarNovaMaquina(nome, limiteHoras, valorMaquina);
+            //void CriarNovaMaquinaComInput()
+            //{
+            //    Console.WriteLine("\nInsira os dados para cadastrar uma máquina abaixo:");
+            //    Console.Write("Nome: ");
+            //    string nome = Console.ReadLine();
+            //    Console.Write("Limite de horas da máquina: ");
+            //    double limiteHoras = Convert.ToDouble(Console.ReadLine());
+            //    Console.Write("Valor da máquina: ");
+            //    double valorMaquina = Convert.ToDouble(Console.ReadLine());
+            //    CriarNovaMaquina(nome, limiteHoras, valorMaquina);
 
-            }
-            void ExibirEquipamentos()
-            {
-                foreach (var equipamento in Dados.equipamentos)
-                {
-                    Console.WriteLine(equipamento.nome);
-                }
-            }
-        }
+            //}
+        //    void ExibirEquipamentos()
+        //    {
+        //        foreach (var equipamento in SeedData.equipamentos)
+        //        {
+        //            Console.WriteLine(equipamento.nome);
+        //        }
+        //    }
+        //}
+
+        //public void calcularValorHora(Maquina maquina)
+        //{
+        //    maquina.valorHora = ((maquina.valorMaquina * 0.10) / 365) / 24;
+        //}
 
         private readonly OcupacaoMaquinaOFCContext _context;
 
