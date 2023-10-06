@@ -24,22 +24,24 @@ namespace OcupacaoMaquinaOFC.Migrations
 
             modelBuilder.Entity("OcupacaoMaquinaOFC.Models.AlocacaoHoras", b =>
                 {
-                    b.Property<int>("qtdHoraPorMaquina")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("qtdHoraPorMaquina"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
-                    b.Property<string>("maquinanome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("maquinaid")
+                        .HasColumnType("int");
 
-                    b.Property<string>("projetoid")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("projetoid")
+                        .HasColumnType("int");
 
-                    b.HasKey("qtdHoraPorMaquina");
+                    b.Property<int>("qtdHoraPorMaquina")
+                        .HasColumnType("int");
 
-                    b.HasIndex("maquinanome");
+                    b.HasKey("id");
+
+                    b.HasIndex("maquinaid");
 
                     b.HasIndex("projetoid");
 
@@ -48,24 +50,37 @@ namespace OcupacaoMaquinaOFC.Migrations
 
             modelBuilder.Entity("OcupacaoMaquinaOFC.Models.Maquina", b =>
                 {
-                    b.Property<string>("nome")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
                     b.Property<double>("limiteHoras")
+                        .HasColumnType("float");
+
+                    b.Property<string>("nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("valorHora")
                         .HasColumnType("float");
 
                     b.Property<double>("valorMaquina")
                         .HasColumnType("float");
 
-                    b.HasKey("nome");
+                    b.HasKey("id");
 
                     b.ToTable("Maquina");
                 });
 
             modelBuilder.Entity("OcupacaoMaquinaOFC.Models.Projeto", b =>
                 {
-                    b.Property<string>("id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
                     b.Property<DateTime>("dataConclusao")
                         .HasColumnType("datetime2");
@@ -86,13 +101,15 @@ namespace OcupacaoMaquinaOFC.Migrations
                 {
                     b.HasOne("OcupacaoMaquinaOFC.Models.Maquina", "maquina")
                         .WithMany()
-                        .HasForeignKey("maquinanome")
+                        .HasForeignKey("maquinaid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OcupacaoMaquinaOFC.Models.Projeto", "projeto")
                         .WithMany()
-                        .HasForeignKey("projetoid");
+                        .HasForeignKey("projetoid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("maquina");
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -12,22 +13,26 @@ namespace OcupacaoMaquinaOFC.Migrations
                 name: "Maquina",
                 columns: table => new
                 {
-                    nome = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     limiteHoras = table.Column<double>(type: "float", nullable: false),
-                    valorMaquina = table.Column<double>(type: "float", nullable: false)
+                    valorMaquina = table.Column<double>(type: "float", nullable: false),
+                    valorHora = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Maquina", x => x.nome);
+                    table.PrimaryKey("PK_Maquina", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Projeto",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    dataInicio = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    dataConclusao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    dataInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    dataConclusao = table.Column<DateTime>(type: "datetime2", nullable: false),
                     lider = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -39,31 +44,33 @@ namespace OcupacaoMaquinaOFC.Migrations
                 name: "AlocacaoHoras",
                 columns: table => new
                 {
-                    qtdHoraPorMaquina = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    maquinanome = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    projetoid = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    qtdHoraPorMaquina = table.Column<int>(type: "int", nullable: false),
+                    maquinaid = table.Column<int>(type: "int", nullable: false),
+                    projetoid = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AlocacaoHoras", x => x.qtdHoraPorMaquina);
+                    table.PrimaryKey("PK_AlocacaoHoras", x => x.id);
                     table.ForeignKey(
-                        name: "FK_AlocacaoHoras_Maquina_maquinanome",
-                        column: x => x.maquinanome,
+                        name: "FK_AlocacaoHoras_Maquina_maquinaid",
+                        column: x => x.maquinaid,
                         principalTable: "Maquina",
-                        principalColumn: "nome",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AlocacaoHoras_Projeto_projetoid",
                         column: x => x.projetoid,
                         principalTable: "Projeto",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AlocacaoHoras_maquinanome",
+                name: "IX_AlocacaoHoras_maquinaid",
                 table: "AlocacaoHoras",
-                column: "maquinanome");
+                column: "maquinaid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AlocacaoHoras_projetoid",
