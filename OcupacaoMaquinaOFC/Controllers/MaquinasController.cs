@@ -112,18 +112,21 @@ namespace OcupacaoMaquinaOFC.Controllers
         }
 
         // GET: Maquinas/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null || _context.Maquina == null)
+            if (_context.Maquina == null)
             {
                 return NotFound();
             }
 
             var maquina = await _context.Maquina.FindAsync(id);
+
             if (maquina == null)
             {
                 return NotFound();
             }
+
             return View(maquina);
         }
 
@@ -132,9 +135,9 @@ namespace OcupacaoMaquinaOFC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("nome,limiteHoras,valorMaquina,valorHora")] Maquina maquina)
+        public async Task<IActionResult> Edit(int id, [Bind("id, nome,limiteHoras,valorMaquina,valorHora")] Maquina maquina)
         {
-            if (id != maquina.nome)
+            if (id != maquina.id)
             {
                 return NotFound();
             }
@@ -144,6 +147,7 @@ namespace OcupacaoMaquinaOFC.Controllers
                 try
                 {
                     _context.Update(maquina);
+                    calcularValorHora(maquina);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
