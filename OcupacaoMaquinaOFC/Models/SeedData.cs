@@ -51,21 +51,18 @@ public static class SeedData
             context.Projeto.AddRange(
                 new Projeto
                 {
-                    id = "Projeto_12345",
                     dataInicio = new DateTime(2023, 03, 01),
                     dataConclusao = new DateTime(2024, 03, 01),
                     lider = "Leon"
                 },
                 new Projeto
                 {
-                    id = "Projeto_54321",
                     dataInicio = new DateTime(2022, 03, 01),
                     dataConclusao = new DateTime(2024, 03, 01),
                     lider = "Joao"
                 },
                 new Projeto
                 {
-                    id = "Projeto_35241",
                     dataInicio = new DateTime(2023, 03, 01),
                     dataConclusao = new DateTime(2024, 03, 01),
                     lider = "Henrique"
