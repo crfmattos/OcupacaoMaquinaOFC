@@ -13,20 +13,20 @@ namespace OcupacaoMaquinaOFC.Controllers
     public class ProjetosController : Controller
     {
 
-        List<Projeto> CriarListaProjetos()
-        {
-            return SeedData.LISTAINFORMACOESPROJETOS;
-        }
+        //List<Projeto> CriarListaProjetos()
+        //{
+        //    return SeedData.LISTAINFORMACOESPROJETOS;
+        //}
 
-        void PopularBancoDeProjetos()
-        {
-            SeedData.projetos.AddRange(CriarListaProjetos());
-        }
+        //void PopularBancoDeProjetos()
+        //{
+        //    SeedData.projetos.AddRange(CriarListaProjetos());
+        //}
 
-        void CriarNovoProjeto(string id, DateTime dataInicio, DateTime dataConclusao, string lider)
-        {
-            SeedData.projetos.Add(new Projeto(id, dataInicio, dataConclusao, lider));
-        }
+        //void CriarNovoProjeto(string id, DateTime dataInicio, DateTime dataConclusao, string lider)
+        //{
+        //    SeedData.projetos.Add(new Projeto(id, dataInicio, dataConclusao, lider));
+        //}
 
         //void CriarNovoProjetoComInput()
         //{
@@ -75,9 +75,9 @@ namespace OcupacaoMaquinaOFC.Controllers
         }
 
         // GET: Projetos/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null || _context.Projeto == null)
+            if (_context.Projeto == null)
             {
                 return NotFound();
             }
@@ -115,9 +115,9 @@ namespace OcupacaoMaquinaOFC.Controllers
         }
 
         // GET: Projetos/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null || _context.Projeto == null)
+            if (_context.Projeto == null)
             {
                 return NotFound();
             }
@@ -135,7 +135,7 @@ namespace OcupacaoMaquinaOFC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("id,dataInicio,dataConclusao,lider")] Projeto projeto)
+        public async Task<IActionResult> Edit(int id, [Bind("id,dataInicio,dataConclusao,lider")] Projeto projeto)
         {
             if (id != projeto.id)
             {
@@ -166,7 +166,7 @@ namespace OcupacaoMaquinaOFC.Controllers
         }
 
         // GET: Projetos/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null || _context.Projeto == null)
             {
@@ -202,7 +202,7 @@ namespace OcupacaoMaquinaOFC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProjetoExists(string id)
+        private bool ProjetoExists(int id)
         {
           return (_context.Projeto?.Any(e => e.id == id)).GetValueOrDefault();
         }
