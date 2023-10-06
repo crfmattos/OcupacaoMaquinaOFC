@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OcupacaoMaquinaOFC.Models;
 public class Maquina
@@ -18,9 +19,19 @@ public class Maquina
 
     [Key]
     public int id { get; set; }
+
+    
+    [Display(Name = "Nome da máquina")]
     public string nome { get; set; }
+
+    [Display(Name = "Limite de horas")]
     public double limiteHoras { get; set; }
+
+    [Display(Name = "Valor máquina")]
     public double valorMaquina { get; set; }
+
+    [Display(Name = "Valor da hora-máquina")]
+    [Column(TypeName = "decimal(18, 2)")]
     public double valorHora { get; set; }
 
 
