@@ -13,33 +13,34 @@ namespace OcupacaoMaquinaOFC.Controllers
     public class MaquinasController : Controller
     {
 
-        List<Maquina> CriarListaEquipamentos()
-        {
-            return SeedData.LISTADEQUIPAMENTOS;
-        }
+        //List<Maquina> CriarListaEquipamentos()
+        //{
+        //    return SeedData.LISTADEQUIPAMENTOS;
+        //}
 
 
-        void PopularBancoDeMaquinas()
-        {
-            SeedData.equipamentos.AddRange(CriarListaEquipamentos());
-        }
+        //void PopularBancoDeMaquinas()
+        //{
+        //    SeedData.equipamentos.AddRange(CriarListaEquipamentos());
+        //}
 
-        void CriarNovaMaquina(string nome, double limiteHoras, double valorMaquina)
-        {
-            SeedData.equipamentos.Add(new Maquina(nome, limiteHoras, valorMaquina));
+        //void CriarNovaMaquina(string nome, double limiteHoras, double valorMaquina)
+        //{
+        //    SeedData.equipamentos.Add(new Maquina(nome, limiteHoras, valorMaquina));
+        //}
 
-            //void CriarNovaMaquinaComInput()
-            //{
-            //    Console.WriteLine("\nInsira os dados para cadastrar uma máquina abaixo:");
-            //    Console.Write("Nome: ");
-            //    string nome = Console.ReadLine();
-            //    Console.Write("Limite de horas da máquina: ");
-            //    double limiteHoras = Convert.ToDouble(Console.ReadLine());
-            //    Console.Write("Valor da máquina: ");
-            //    double valorMaquina = Convert.ToDouble(Console.ReadLine());
-            //    CriarNovaMaquina(nome, limiteHoras, valorMaquina);
+        //void CriarNovaMaquinaComInput()
+        //{
+        //    Console.WriteLine("\nInsira os dados para cadastrar uma máquina abaixo:");
+        //    Console.Write("Nome: ");
+        //    string nome = Console.ReadLine();
+        //    Console.Write("Limite de horas da máquina: ");
+        //    double limiteHoras = Convert.ToDouble(Console.ReadLine());
+        //    Console.Write("Valor da máquina: ");
+        //    double valorMaquina = Convert.ToDouble(Console.ReadLine());
+        //    CriarNovaMaquina(nome, limiteHoras, valorMaquina);
 
-            //}
+        //}
         //    void ExibirEquipamentos()
         //    {
         //        foreach (var equipamento in SeedData.equipamentos)
@@ -48,11 +49,10 @@ namespace OcupacaoMaquinaOFC.Controllers
         //        }
         //    }
         //}
-
-        //public void calcularValorHora(Maquina maquina)
-        //{
-        //    maquina.valorHora = ((maquina.valorMaquina * 0.10) / 365) / 24;
-        //}
+        public void calcularValorHora(Maquina maquina)
+        {
+            maquina.valorHora = ((maquina.valorMaquina * 0.10) / 365) / 24;
+        }
 
         private readonly OcupacaoMaquinaOFCContext _context;
 
@@ -102,6 +102,8 @@ namespace OcupacaoMaquinaOFC.Controllers
         {
             if (ModelState.IsValid)
             {
+                calcularValorHora(maquina);
+
                 _context.Add(maquina);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -130,7 +132,7 @@ namespace OcupacaoMaquinaOFC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("nome,limiteHoras,valorMaquina")] Maquina maquina)
+        public async Task<IActionResult> Edit(string id, [Bind("nome,limiteHoras,valorMaquina,valorHora")] Maquina maquina)
         {
             if (id != maquina.nome)
             {
