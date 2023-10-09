@@ -22,15 +22,20 @@ public class Maquina
 
     
     [Display(Name = "Nome da máquina")]
+    [Required]
     public string nome { get; set; }
 
     [Display(Name = "Limite de horas")]
+    [Column(TypeName = "decimal(18, 2)")]
     public double limiteHoras { get; set; }
 
     [Display(Name = "Valor máquina")]
+    [DataType(DataType.Currency)]
+    [Column(TypeName = "decimal(18, 2)")]
     public double valorMaquina { get; set; }
 
     [Display(Name = "Valor da hora-máquina")]
+    [DataType(DataType.Currency)]
     [Column(TypeName = "decimal(18, 2)")]
     public double valorHora { get; set; }
 

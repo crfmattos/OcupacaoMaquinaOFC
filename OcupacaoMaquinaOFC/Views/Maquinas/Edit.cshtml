@@ -16,28 +16,28 @@
             <input type="hidden" asp-for="id" />
             <div class="form-group">
                 <label asp-for="nome" class="control-label"></label>
-                <input asp-for="nome" class="form-control" />
+                <input asp-for="nome" placeholder="Ex: Mufla" class="form-control" />
                 <span asp-validation-for="nome" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="limiteHoras" class="control-label"></label>
-                <input type="number" asp-for="limiteHoras" class="form-control" />
+                <input type="number" step="0.1" placeholder="Ex: 24" asp-for="limiteHoras" class="form-control" />
                 <span asp-validation-for="limiteHoras" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="valorMaquina" class="control-label"></label>
-                <input type="number" asp-for="valorMaquina" class="form-control" />
+                <input type="number" step="0.01" placeholder="Ex: 200000.00" asp-for="valorMaquina" class="form-control" />
                 <span asp-validation-for="valorMaquina" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Salvar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Voltar</a>
 </div>
 
 @section Scripts {

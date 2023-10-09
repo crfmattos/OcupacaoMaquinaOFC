@@ -62,23 +62,35 @@ namespace OcupacaoMaquinaOFC.Controllers
         }
 
         // GET: Maquinas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-              return _context.Maquina != null ? 
-                          View(await _context.Maquina.ToListAsync()) :
-                          Problem("Entity set 'OcupacaoMaquinaOFCContext.Maquina'  is null.");
+            if (_context.Maquina == null)
+            {
+                return Problem("Entity set 'OcupacaoMaquinaOFCContext.Maquina'  is null.");
+            }
+
+            var maquinas = from m in _context.Maquina
+                           select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                maquinas = maquinas.Where(s => s.nome!.Contains(searchString));
+            }
+
+            return View(await maquinas.ToListAsync());
+                          
         }
 
         // GET: Maquinas/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null || _context.Maquina == null)
+            if (_context.Maquina == null)
             {
                 return NotFound();
             }
 
             var maquina = await _context.Maquina
-                .FirstOrDefaultAsync(m => m.nome == id);
+                .FirstOrDefaultAsync(m => m.id == id);
             if (maquina == null)
             {
                 return NotFound();
@@ -152,7 +164,7 @@ namespace OcupacaoMaquinaOFC.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MaquinaExists(maquina.nome))
+                    if (!MaquinaExists(maquina.id))
                     {
                         return NotFound();
                     }
@@ -167,15 +179,15 @@ namespace OcupacaoMaquinaOFC.Controllers
         }
 
         // GET: Maquinas/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null || _context.Maquina == null)
+            if (_context.Maquina == null)
             {
                 return NotFound();
             }
 
             var maquina = await _context.Maquina
-                .FirstOrDefaultAsync(m => m.nome == id);
+                .FirstOrDefaultAsync(m => m.id == id);
             if (maquina == null)
             {
                 return NotFound();
@@ -187,7 +199,7 @@ namespace OcupacaoMaquinaOFC.Controllers
         // POST: Maquinas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Maquina == null)
             {
@@ -203,9 +215,9 @@ namespace OcupacaoMaquinaOFC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MaquinaExists(string id)
+        private bool MaquinaExists(int id)
         {
-          return (_context.Maquina?.Any(e => e.nome == id)).GetValueOrDefault();
+          return (_context.Maquina?.Any(e => e.id == id)).GetValueOrDefault();
         }
     }
 }
