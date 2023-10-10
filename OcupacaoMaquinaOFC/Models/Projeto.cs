@@ -19,6 +19,9 @@ public class Projeto
     [Display(Name = "Id")]
     public int id { get; set; }
 
+    [Display(Name ="Nome do projeto")]
+    public string nome {  get; set; }
+
     [Display(Name = "Data de início")]
     [DataType(DataType.Date)]
     [Required]
