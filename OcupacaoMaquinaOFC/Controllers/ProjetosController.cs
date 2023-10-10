@@ -186,7 +186,7 @@ namespace OcupacaoMaquinaOFC.Controllers
         // POST: Projetos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Projeto == null)
             {

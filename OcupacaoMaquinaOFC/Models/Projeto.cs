@@ -16,9 +16,20 @@ public class Projeto
     }
 
     [Key]
+    [Display(Name = "Id")]
     public int id { get; set; }
+
+    [Display(Name = "Data de início")]
+    [DataType(DataType.Date)]
+    [Required]
     public DateTime dataInicio { get; set; }
+
+    [Display(Name = "Data de conclusão")]
+    [DataType(DataType.Date)]
+    [Required]
     public DateTime dataConclusao { get; set; }
+
+    [Display(Name = "Líder do projeto")]
     public string lider { get; set; }
     
 }
