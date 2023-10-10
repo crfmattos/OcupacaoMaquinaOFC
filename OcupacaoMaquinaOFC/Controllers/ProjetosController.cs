@@ -103,7 +103,7 @@ namespace OcupacaoMaquinaOFC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,dataInicio,dataConclusao,lider")] Projeto projeto)
+        public async Task<IActionResult> Create([Bind("id, nome , dataInicio,dataConclusao,lider")] Projeto projeto)
         {
             if (ModelState.IsValid)
             {
@@ -135,7 +135,7 @@ namespace OcupacaoMaquinaOFC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,dataInicio,dataConclusao,lider")] Projeto projeto)
+        public async Task<IActionResult> Edit(int id, [Bind("id, nome, dataInicio,dataConclusao,lider")] Projeto projeto)
         {
             if (id != projeto.id)
             {
@@ -168,7 +168,7 @@ namespace OcupacaoMaquinaOFC.Controllers
         // GET: Projetos/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            if (id == null || _context.Projeto == null)
+            if (_context.Projeto == null)
             {
                 return NotFound();
             }

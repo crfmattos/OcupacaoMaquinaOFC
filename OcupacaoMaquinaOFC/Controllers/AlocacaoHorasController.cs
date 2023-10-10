@@ -46,8 +46,15 @@ namespace OcupacaoMaquinaOFC.Controllers
         }
 
         // GET: AlocacaoHoras/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            List<Maquina> maquina = await _context.Maquina.ToListAsync();
+            List<Projeto> projeto = await _context.Projeto.ToListAsync();
+
+
+            ViewData["Maquinas"] = new SelectList(maquina, "id", "nome");
+            ViewData["Projetos"] = new SelectList(projeto, "id", "nome");
+
             return View();
         }
 
@@ -56,14 +63,18 @@ namespace OcupacaoMaquinaOFC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("qtdHoraPorMaquina")] AlocacaoHoras alocacaoHoras)
+        public async Task<IActionResult> Create([Bind("id, qtdHoraPorMaquina, maquina, projeto")] AlocacaoHoras alocacaoHoras)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(alocacaoHoras);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+            Maquina m = _context.Maquina.FirstOrDefault(n => n.id == alocacaoHoras.maquina.id);
+            Projeto p = _context.Projeto.FirstOrDefault(n => n.id == alocacaoHoras.projeto.id);
+
+            alocacaoHoras.maquina = m ?? new Maquina();
+            alocacaoHoras.projeto = p ?? new Projeto();
+
+            _context.Add(alocacaoHoras);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+            
             return View(alocacaoHoras);
         }
 
