@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var maquina = ViewData["Maquinas"] as SelectList;
+    var projeto = ViewData["Projetos"] as SelectList;
 }
 
 <h1>Index</h1>
@@ -13,12 +16,30 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.qtdHoraPorMaquina)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.maquina)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.projeto)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.qtdHoraPorMaquina)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.maquina.nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.projeto.nome)
+                </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.id">Details</a> |

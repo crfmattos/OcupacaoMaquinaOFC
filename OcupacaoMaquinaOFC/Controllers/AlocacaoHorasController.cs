@@ -23,7 +23,7 @@ namespace OcupacaoMaquinaOFC.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.AlocacaoHoras != null ? 
-                          View(await _context.AlocacaoHoras.ToListAsync()) :
+                          View(await _context.AlocacaoHoras.Include(alocacao => alocacao.maquina).Include(alocacao => alocacao.projeto).ToListAsync()) :
                           Problem("Entity set 'OcupacaoMaquinaOFCContext.AlocacaoHoras'  is null.");
         }
 

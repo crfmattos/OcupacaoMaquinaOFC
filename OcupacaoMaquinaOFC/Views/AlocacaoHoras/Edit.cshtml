@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var maquina = ViewData["Maquinas"] as SelectList;
+    var projeto = ViewData["Projetos"] as SelectList;
 }
 
 <h1>Edit</h1>
@@ -14,6 +17,25 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="qtdHoraPorMaquina" />
+            <div class="form-group">
+                <label asp-for="qtdHoraPorMaquina" class="control-label"></label>
+                <input type="number" step="0.1" placeholder="Ex: 24" asp-for="qtdHoraPorMaquina" class="form-control" />
+                <span asp-validation-for="qtdHoraPorMaquina" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="maquina" class="control-label"></label>
+                <select asp-for="maquina.id" class="form-control" asp-items='(maquina).OrderBy(p => p.Text)'>
+                    <option value="-1">Selecione a máquina</option>
+                </select>
+                <span asp-validation-for="maquina.id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="projeto" class="control-label"></label>
+                <select asp-for="projeto.id" class="form-control" asp-items='(projeto).OrderBy(p => p.Text)'>
+                    <option value="-1">Selecione o projeto</option>
+                </select>
+                <span asp-validation-for="projeto.id" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
