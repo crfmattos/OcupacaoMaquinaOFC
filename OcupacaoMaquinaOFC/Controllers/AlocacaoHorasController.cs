@@ -30,7 +30,7 @@ namespace OcupacaoMaquinaOFC.Controllers
         // GET: AlocacaoHoras/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.AlocacaoHoras == null)
+            if (_context.AlocacaoHoras == null)
             {
                 return NotFound();
             }
@@ -41,7 +41,7 @@ namespace OcupacaoMaquinaOFC.Controllers
             {
                 return NotFound();
             }
-
+                
             return View(alocacaoHoras);
         }
 
@@ -81,7 +81,7 @@ namespace OcupacaoMaquinaOFC.Controllers
         // GET: AlocacaoHoras/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.AlocacaoHoras == null)
+            if (_context.AlocacaoHoras == null)
             {
                 return NotFound();
             }
@@ -132,7 +132,7 @@ namespace OcupacaoMaquinaOFC.Controllers
         // GET: AlocacaoHoras/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.AlocacaoHoras == null)
+            if (_context.AlocacaoHoras == null)
             {
                 return NotFound();
             }

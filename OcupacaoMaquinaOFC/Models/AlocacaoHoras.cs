@@ -22,8 +22,16 @@ public class AlocacaoHoras
 
     [Key]
     public int id { get; set; }
+
+    [Display(Name = "Horas por máquina")]
     public int qtdHoraPorMaquina { get; set; }
+
+    [Display(Name = "Máquina")]
+    [Required]
     public Maquina maquina { get; set; }
+
+    [Display(Name = "Projeto")]
+    [Required]
     public Projeto projeto { get; set; }
 
 
