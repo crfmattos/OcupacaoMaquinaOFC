@@ -18,6 +18,7 @@ public class Maquina
     }
 
     [Key]
+    [Display(Name = "Id")]
     public int id { get; set; }
 
     

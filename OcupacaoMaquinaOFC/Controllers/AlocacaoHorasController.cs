@@ -43,6 +43,7 @@ namespace OcupacaoMaquinaOFC.Controllers
             }
                 
             return View(alocacaoHoras);
+
         }
 
         // GET: AlocacaoHoras/Create
