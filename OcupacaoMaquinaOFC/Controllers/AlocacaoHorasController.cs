@@ -87,11 +87,19 @@ namespace OcupacaoMaquinaOFC.Controllers
                 return NotFound();
             }
 
-            var alocacaoHoras = await _context.AlocacaoHoras.FindAsync(id);
+            var alocacaoHoras = await _context.AlocacaoHoras.Include(alocacao => alocacao.maquina).Include(alocacao => alocacao.projeto).Where(a => a.id == id).FirstOrDefaultAsync();
             if (alocacaoHoras == null)
             {
                 return NotFound();
             }
+
+            List<Maquina> maquina = await _context.Maquina.ToListAsync();
+            List<Projeto> projeto = await _context.Projeto.ToListAsync();
+
+
+            ViewData["Maquinas"] = new SelectList(maquina, "id", "nome");
+            ViewData["Projetos"] = new SelectList(projeto, "id", "nome");
+
             return View(alocacaoHoras);
         }
 
@@ -100,9 +108,9 @@ namespace OcupacaoMaquinaOFC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("qtdHoraPorMaquina")] AlocacaoHoras alocacaoHoras)
+        public async Task<IActionResult> Edit(int id, [Bind("id, qtdHoraPorMaquina, maquina, projeto")] AlocacaoHoras alocacaoHoras)
         {
-            if (id != alocacaoHoras.qtdHoraPorMaquina)
+            if (id != alocacaoHoras.id)
             {
                 return NotFound();
             }
@@ -111,12 +119,13 @@ namespace OcupacaoMaquinaOFC.Controllers
             {
                 try
                 {
-                    _context.Update(alocacaoHoras);
+                    _context.Add(alocacaoHoras);
                     await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AlocacaoHorasExists(alocacaoHoras.qtdHoraPorMaquina))
+                    if (!AlocacaoHorasExists(alocacaoHoras.id))
                     {
                         return NotFound();
                     }
@@ -125,9 +134,13 @@ namespace OcupacaoMaquinaOFC.Controllers
                         throw;
                     }
                 }
+                
                 return RedirectToAction(nameof(Index));
             }
-            return View(alocacaoHoras);
+            else
+            {
+                throw new Exception("Modelo inválido");
+            }
         }
 
         // GET: AlocacaoHoras/Delete/5
