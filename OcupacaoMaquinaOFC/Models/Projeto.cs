@@ -9,30 +9,28 @@ public class Projeto
 
     public Projeto(int id, DateTime dataInicio, DateTime dataConclusao, string lider)
     {
-        this.id = id;
-        this.dataInicio = dataInicio;
-        this.dataConclusao = dataConclusao;
-        this.lider = lider;
+        this.Id = id;
+        this.DataInicio = dataInicio;
+        this.DataConclusao = dataConclusao;
+        this.Lider = lider;
     }
 
     [Key]
     [Display(Name = "Id")]
-    public int id { get; set; }
+    public int Id { get; set; }
 
     [Display(Name ="Nome do projeto")]
-    public string nome {  get; set; }
+    public string Nome {  get; set; }
 
     [Display(Name = "Data de início")]
     [DataType(DataType.Date)]
-    [Required]
-    public DateTime dataInicio { get; set; }
+    public DateTime DataInicio { get; set; }
 
     [Display(Name = "Data de conclusão")]
     [DataType(DataType.Date)]
-    [Required]
-    public DateTime dataConclusao { get; set; }
+    public DateTime DataConclusao { get; set; }
 
     [Display(Name = "Líder do projeto")]
-    public string lider { get; set; }
+    public string Lider { get; set; }
     
 }

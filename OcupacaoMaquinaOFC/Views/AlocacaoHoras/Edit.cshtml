@@ -1,11 +1,8 @@
-﻿@model OcupacaoMaquinaOFC.Models.AlocacaoHoras
+﻿@model OcupacaoMaquinaOFC.Models.AlocacaoHorasViewModel
 
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    var maquina = ViewData["Maquinas"] as SelectList;
-    var projeto = ViewData["Projetos"] as SelectList;
 }
 
 <h1>Editar</h1>
@@ -16,34 +13,36 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="id" />
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="qtdHoraPorMaquina" class="control-label"></label>
-                <input type="number" step="0.1" placeholder="Ex: 24" asp-for="qtdHoraPorMaquina" class="form-control" />
-                <span asp-validation-for="qtdHoraPorMaquina" class="text-danger"></span>
+                <label asp-for="QtdHoraPorMaquina" class="control-label"></label>
+                <input type="number" step="0.1" placeholder="Ex: 24" asp-for="QtdHoraPorMaquina" class="form-control" />
+                <span asp-validation-for="QtdHoraPorMaquina" class="text-danger"></span>
             </div>
-            @if (maquina != null)
+            @if (ViewData["Maquinas"] as SelectList != null)
             {
                 <div class="form-group">
-                    <label asp-for="maquina" class="control-label"></label>
-                    <select asp-for="maquina" class="form-control" asp-items='(maquina).OrderBy(p => p.Text)'>
-                        <option value="-1">Selecione a máquina</option>
-                    </select>
-                    <span asp-validation-for="maquina" class="text-danger"></span>
+                    <label asp-for="MaquinaId" class="control-label"></label>
+                    <select asp-for="MaquinaId" class="form-control" asp-items='ViewData["Maquinas"] as SelectList'>
+                <option value="-1">Selecione a máquina</option>
+                </select>
+                    <span asp-validation-for="MaquinaId" class="text-danger"></span>
                 </div>
             }
-            
-                @if (projeto != null)
-                {
+
+            @if (ViewData["Projetos"] as SelectList != null)
+            {
                 <div class="form-group">
-                    <label asp-for="projeto" class="control-label"></label>
-                    <select asp-for="projeto" class="form-control" asp-items='(projeto).OrderBy(p => p.Text)'>
+                    <label asp-for="ProjetoId" class="control-label"></label>
+                    <select asp-for="ProjetoId" class="form-control" asp-items='ViewData["Projetos"] as SelectList'>
+                        <!-- dando erro aqui "System.NullReferenceException: 'Object reference not set to an instance of an object.'
+                        " -->
                         <option value="-1">Selecione o projeto</option>
                     </select>
-                    <span asp-validation-for="projeto" class="text-danger"></span>
+                    <span asp-validation-for="ProjetoId" class="text-danger"></span>
                 </div>
             }
-            
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -54,7 +53,9 @@
 <div>
     <a asp-action="Index">Voltar</a>
 </div>
-
+        
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

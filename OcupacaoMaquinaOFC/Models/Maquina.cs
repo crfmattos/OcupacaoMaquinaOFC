@@ -10,35 +10,34 @@ public class Maquina
 
     public Maquina(int id, string nome, double limiteHoras, double valorMaquina, double valorHora)
     {
-        this.id = id;
-        this.nome = nome;
-        this.limiteHoras = limiteHoras;
-        this.valorMaquina = valorMaquina;
-        this.valorHora = valorHora;
+        this.Id = id;
+        this.Nome = nome;
+        this.LimiteHoras = limiteHoras;
+        this.ValorMaquina = valorMaquina;
+        this.ValorHora = valorHora;
     }
 
     [Key]
     [Display(Name = "Id")]
-    public int id { get; set; }
+    public int Id { get; set; }
 
     
     [Display(Name = "Nome da máquina")]
-    [Required]
-    public string nome { get; set; }
+    public string Nome { get; set; }
 
     [Display(Name = "Limite de horas")]
     [Column(TypeName = "decimal(18, 2)")]
-    public double limiteHoras { get; set; }
+    public double LimiteHoras { get; set; }
 
     [Display(Name = "Valor máquina")]
     [DataType(DataType.Currency)]
     [Column(TypeName = "decimal(18, 2)")]
-    public double valorMaquina { get; set; }
+    public double ValorMaquina { get; set; }
 
     [Display(Name = "Valor da hora-máquina")]
     [DataType(DataType.Currency)]
     [Column(TypeName = "decimal(18, 2)")]
-    public double valorHora { get; set; }
+    public double ValorHora { get; set; }
 
 
 

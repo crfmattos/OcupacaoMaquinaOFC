@@ -22,9 +22,28 @@ namespace OcupacaoMaquinaOFC.Controllers
         // GET: AlocacaoHoras
         public async Task<IActionResult> Index()
         {
-              return _context.AlocacaoHoras != null ? 
-                          View(await _context.AlocacaoHoras.Include(alocacao => alocacao.maquina).Include(alocacao => alocacao.projeto).ToListAsync()) :
-                          Problem("Entity set 'OcupacaoMaquinaOFCContext.AlocacaoHoras'  is null.");
+            if (_context.AlocacaoHoras == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                List<AlocacaoHorasViewModel> alocacaoHoras = await _context.AlocacaoHoras
+                    .Include(alocacao => alocacao.Maquina)
+                    .Include(alocacao => alocacao.Projeto)
+                    .Select(alocacao => new AlocacaoHorasViewModel
+                    {
+                        Id = alocacao.Id,
+                        Maquina = alocacao.Maquina,
+                        Projeto = alocacao.Projeto,
+                        MaquinaId = alocacao.MaquinaId,
+                        ProjetoId = alocacao.ProjetoId,
+                        QtdHoraPorMaquina = alocacao.QtdHoraPorMaquina,
+                    })
+                    .ToListAsync();
+
+                return View(alocacaoHoras);
+            }
         }
 
         // GET: AlocacaoHoras/Details/5
@@ -35,14 +54,28 @@ namespace OcupacaoMaquinaOFC.Controllers
                 return NotFound();
             }
 
-            var alocacaoHoras = await _context.AlocacaoHoras
-                .FirstOrDefaultAsync(m => m.qtdHoraPorMaquina == id);
-            if (alocacaoHoras == null)
+            var alocacaoDb = await _context.AlocacaoHoras.Include(a => a.Projeto).Include(a => a.Maquina).FirstOrDefaultAsync(a => a.Id == id);
+
+            if (alocacaoDb != null)
+            {
+                AlocacaoHorasViewModel alocacaoHoras = new AlocacaoHorasViewModel
+                {
+                    Id = alocacaoDb.Id,
+                    Maquina = alocacaoDb.Maquina,
+                    MaquinaId = alocacaoDb.MaquinaId,
+                    Projeto = alocacaoDb.Projeto,
+                    ProjetoId = alocacaoDb.ProjetoId,
+                    QtdHoraPorMaquina = alocacaoDb.QtdHoraPorMaquina,
+                };
+
+                return View(alocacaoHoras);
+            }
+            else
             {
                 return NotFound();
             }
-                
-            return View(alocacaoHoras);
+
+            return NotFound();
 
         }
 
@@ -53,8 +86,8 @@ namespace OcupacaoMaquinaOFC.Controllers
             List<Projeto> projeto = await _context.Projeto.ToListAsync();
 
 
-            ViewData["Maquinas"] = new SelectList(maquina, "id", "nome");
-            ViewData["Projetos"] = new SelectList(projeto, "id", "nome");
+            ViewData["Maquinas"] = maquina;
+            ViewData["Projetos"] = projeto;
 
             return View();
         }
@@ -64,43 +97,55 @@ namespace OcupacaoMaquinaOFC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id, qtdHoraPorMaquina, maquina, projeto")] AlocacaoHoras alocacaoHoras)
+        public async Task<IActionResult> Create([Bind("QtdHoraPorMaquina, MaquinaId, ProjetoId")] AlocacaoHoras alocacaoHoras)
         {
-            Maquina m = _context.Maquina.FirstOrDefault(n => n.id == alocacaoHoras.maquina.id);
-            Projeto p = _context.Projeto.FirstOrDefault(n => n.id == alocacaoHoras.projeto.id);
+            Maquina m = _context.Maquina.FirstOrDefault(n => n.Id == alocacaoHoras.MaquinaId);
+            Projeto p = _context.Projeto.FirstOrDefault(n => n.Id == alocacaoHoras.ProjetoId);
 
-            alocacaoHoras.maquina = m ?? new Maquina();
-            alocacaoHoras.projeto = p ?? new Projeto();
+            alocacaoHoras.Maquina = m ?? new Maquina();
+            alocacaoHoras.Projeto = p ?? new Projeto();
 
             _context.Add(alocacaoHoras);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
-            
-            return View(alocacaoHoras);
         }
 
         // GET: AlocacaoHoras/Edit/5
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (_context.AlocacaoHoras == null)
-            {
-                return NotFound();
-            }
-
-            var alocacaoHoras = await _context.AlocacaoHoras.Include(alocacao => alocacao.maquina).Include(alocacao => alocacao.projeto).Where(a => a.id == id).FirstOrDefaultAsync();
-            if (alocacaoHoras == null)
-            {
-                return NotFound();
-            }
-
             List<Maquina> maquina = await _context.Maquina.ToListAsync();
             List<Projeto> projeto = await _context.Projeto.ToListAsync();
 
+            ViewData["Maquinas"] = new SelectList(maquina, "Id", "Nome");
+            ViewData["Projetos"] = new SelectList(projeto, "Id", "Nome");
 
-            ViewData["Maquinas"] = new SelectList(maquina, "id", "nome");
-            ViewData["Projetos"] = new SelectList(projeto, "id", "nome");
+            var alocacaoHoras = await _context.AlocacaoHoras.Include(alocacao => alocacao.Maquina).Include(alocacao => alocacao.Projeto).Where(a => a.Id == id).FirstOrDefaultAsync();
+            if (alocacaoHoras == null)
+            {
+                ViewData["Maquinas"] = new SelectList(maquina, "Id", "Nome");
+                ViewData["Projetos"] = new SelectList(projeto, "Id", "Nome");
 
-            return View(alocacaoHoras);
+                return NotFound();
+            }
+            else
+            {
+                AlocacaoHorasViewModel alocacaoHorasViewModel = new AlocacaoHorasViewModel
+                {
+                    Id = alocacaoHoras.Id,
+                    Maquina = alocacaoHoras.Maquina,
+                    MaquinaId = alocacaoHoras.MaquinaId,
+                    Projeto = alocacaoHoras.Projeto,
+                    ProjetoId = alocacaoHoras.ProjetoId,
+                    QtdHoraPorMaquina = alocacaoHoras.QtdHoraPorMaquina
+                };
+
+                ViewData["Maquinas"] = new SelectList(maquina, "Id", "Nome");
+                ViewData["Projetos"] = new SelectList(projeto, "Id", "Nome");
+
+                return View(alocacaoHorasViewModel);
+            }
         }
 
         // POST: AlocacaoHoras/Edit/5
@@ -108,9 +153,14 @@ namespace OcupacaoMaquinaOFC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id, qtdHoraPorMaquina, maquina, projeto")] AlocacaoHoras alocacaoHoras)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, QtdHoraPorMaquina, MaquinaId, ProjetoId")] AlocacaoHorasViewModel alocacaoHorasViewModel)
         {
-            if (id != alocacaoHoras.id)
+            if (id != alocacaoHorasViewModel.Id)
+            {
+                return NotFound();
+            }
+
+            if (!AlocacaoHorasExists(id))
             {
                 return NotFound();
             }
@@ -119,13 +169,25 @@ namespace OcupacaoMaquinaOFC.Controllers
             {
                 try
                 {
-                    _context.Add(alocacaoHoras);
-                    await _context.SaveChangesAsync();
+                    if (alocacaoHorasViewModel != null)
+                    {
+                        AlocacaoHoras alocacaoHoras = new AlocacaoHoras
+                        {
+                            Id = alocacaoHorasViewModel.Id,
+                            Maquina = alocacaoHorasViewModel.Maquina,
+                            MaquinaId = alocacaoHorasViewModel.MaquinaId,
+                            Projeto = alocacaoHorasViewModel.Projeto,
+                            ProjetoId = alocacaoHorasViewModel.ProjetoId,
+                            QtdHoraPorMaquina = alocacaoHorasViewModel.QtdHoraPorMaquina
+                        };
 
+                        _context.Update(alocacaoHoras);
+                        await _context.SaveChangesAsync();
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AlocacaoHorasExists(alocacaoHoras.id))
+                    if (!AlocacaoHorasExists(id))
                     {
                         return NotFound();
                     }
@@ -134,13 +196,11 @@ namespace OcupacaoMaquinaOFC.Controllers
                         throw;
                     }
                 }
-                
                 return RedirectToAction(nameof(Index));
             }
-            else
-            {
-                throw new Exception("Modelo inválido");
-            }
+
+            return View(alocacaoHorasViewModel);
+
         }
 
         // GET: AlocacaoHoras/Delete/5
@@ -151,14 +211,26 @@ namespace OcupacaoMaquinaOFC.Controllers
                 return NotFound();
             }
 
-            var alocacaoHoras = await _context.AlocacaoHoras
-                .FirstOrDefaultAsync(m => m.qtdHoraPorMaquina == id);
-            if (alocacaoHoras == null)
+
+            var alocacaoHoras = await _context.AlocacaoHoras.Include(a => a.Projeto).Include(a => a.Maquina)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            AlocacaoHorasViewModel alocacaoHorasViewModel = new AlocacaoHorasViewModel
+            {
+                Id = alocacaoHoras.Id,
+                Maquina = alocacaoHoras.Maquina,
+                MaquinaId = alocacaoHoras.MaquinaId,
+                Projeto = alocacaoHoras.Projeto,
+                ProjetoId = alocacaoHoras.ProjetoId,
+                QtdHoraPorMaquina = alocacaoHoras.QtdHoraPorMaquina
+            };
+
+            if (alocacaoHorasViewModel == null)
             {
                 return NotFound();
             }
 
-            return View(alocacaoHoras);
+            return View(alocacaoHorasViewModel);
         }
 
         // POST: AlocacaoHoras/Delete/5
@@ -175,14 +247,14 @@ namespace OcupacaoMaquinaOFC.Controllers
             {
                 _context.AlocacaoHoras.Remove(alocacaoHoras);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool AlocacaoHorasExists(int id)
         {
-          return (_context.AlocacaoHoras?.Any(e => e.qtdHoraPorMaquina == id)).GetValueOrDefault();
+            return (_context.AlocacaoHoras?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

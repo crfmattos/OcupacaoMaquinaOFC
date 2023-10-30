@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OcupacaoMaquinaOFC.Data;
 
@@ -11,9 +12,10 @@ using OcupacaoMaquinaOFC.Data;
 namespace OcupacaoMaquinaOFC.Migrations
 {
     [DbContext(typeof(OcupacaoMaquinaOFCContext))]
-    partial class OcupacaoMaquinaOFCContextModelSnapshot : ModelSnapshot
+    [Migration("20231024182424_VariaveisMaquina")]
+    partial class VariaveisMaquina
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

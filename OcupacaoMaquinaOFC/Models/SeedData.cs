@@ -22,24 +22,24 @@ public static class SeedData
             context.Maquina.AddRange(
                 new Maquina
                 {
-                     nome = "Mufla",
-                     limiteHoras = 100,
-                     valorMaquina = 100000,
-                     valorHora = 1.141 // valorHora = ((valorMaquina * 0.10)/365)/24
+                     Nome = "Mufla",
+                     LimiteHoras = 100,
+                     ValorMaquina = 100000,
+                     ValorHora = 1.141 // valorHora = ((valorMaquina * 0.10)/365)/24
                 },
                 new Maquina
                 {
-                    nome = "PHMETRO",
-                    limiteHoras = 100,
-                    valorMaquina = 800000,
-                    valorHora = 9.132 // valorHora = ((valorMaquina * 0.10)/365)/24
+                    Nome = "PHMETRO",
+                    LimiteHoras = 100,
+                    ValorMaquina = 800000,
+                    ValorHora = 9.132 // valorHora = ((valorMaquina * 0.10)/365)/24
                 },
                 new Maquina
                 {
-                    nome = "Balança Analítica",
-                    limiteHoras = 100,
-                    valorMaquina = 500000,
-                    valorHora = 5.707 // valorHora = ((valorMaquina * 0.10)/365)/24
+                    Nome = "Balança Analítica",
+                    LimiteHoras = 100,
+                    ValorMaquina = 500000,
+                    ValorHora = 5.707 // valorHora = ((valorMaquina * 0.10)/365)/24
                 }
             );
             context.SaveChanges();
@@ -51,21 +51,21 @@ public static class SeedData
             context.Projeto.AddRange(
                 new Projeto
                 {
-                    dataInicio = new DateTime(2023, 03, 01),
-                    dataConclusao = new DateTime(2024, 03, 01),
-                    lider = "Leon"
+                    DataInicio = new DateTime(2023, 03, 01),
+                    DataConclusao = new DateTime(2024, 03, 01),
+                    Lider = "Leon"
                 },
                 new Projeto
                 {
-                    dataInicio = new DateTime(2022, 03, 01),
-                    dataConclusao = new DateTime(2024, 03, 01),
-                    lider = "Joao"
+                    DataInicio = new DateTime(2022, 03, 01),
+                    DataConclusao = new DateTime(2024, 03, 01),
+                    Lider = "Joao"
                 },
                 new Projeto
                 {
-                    dataInicio = new DateTime(2023, 03, 01),
-                    dataConclusao = new DateTime(2024, 03, 01),
-                    lider = "Henrique"
+                    DataInicio = new DateTime(2023, 03, 01),
+                    DataConclusao = new DateTime(2024, 03, 01),
+                    Lider = "Henrique"
                 }
             );
             context.SaveChanges();

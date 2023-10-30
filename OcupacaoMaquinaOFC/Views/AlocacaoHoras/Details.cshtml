@@ -1,11 +1,11 @@
-﻿@model OcupacaoMaquinaOFC.Models.AlocacaoHoras
+﻿@model OcupacaoMaquinaOFC.Models.AlocacaoHorasViewModel
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    var maquina = ViewData["Maquinas"] as SelectList;
-    var projeto = ViewData["Projetos"] as SelectList;
+    var selectMaquinas = ViewData["Maquinas"] as SelectList;
+    var selectProjetos = ViewData["Projetos"] as SelectList;
 }
 
 <h1>Detalhes</h1>
@@ -15,26 +15,26 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.qtdHoraPorMaquina)
+            @Html.DisplayNameFor(model => model.QtdHoraPorMaquina)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.qtdHoraPorMaquina)
+            @Html.DisplayFor(model => model.QtdHoraPorMaquina)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.maquina)
+            @Html.DisplayNameFor(model => model.Maquina)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.maquina)
+            @Html.DisplayFor(model => model.Maquina)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.projeto)
+            @Html.DisplayNameFor(model => model.Projeto)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.projeto)
+            @Html.DisplayFor(model => model.Projeto)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.id">Editar</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Id">Editar</a> |
     <a asp-action="Index">Voltar</a>
 </div>

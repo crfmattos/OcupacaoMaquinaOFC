@@ -83,7 +83,7 @@ namespace OcupacaoMaquinaOFC.Controllers
             }
 
             var projeto = await _context.Projeto
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (projeto == null)
             {
                 return NotFound();
@@ -137,7 +137,7 @@ namespace OcupacaoMaquinaOFC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id, nome, dataInicio,dataConclusao,lider")] Projeto projeto)
         {
-            if (id != projeto.id)
+            if (id != projeto.Id)
             {
                 return NotFound();
             }
@@ -151,7 +151,7 @@ namespace OcupacaoMaquinaOFC.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProjetoExists(projeto.id))
+                    if (!ProjetoExists(projeto.Id))
                     {
                         return NotFound();
                     }
@@ -174,7 +174,7 @@ namespace OcupacaoMaquinaOFC.Controllers
             }
 
             var projeto = await _context.Projeto
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (projeto == null)
             {
                 return NotFound();
@@ -204,7 +204,7 @@ namespace OcupacaoMaquinaOFC.Controllers
 
         private bool ProjetoExists(int id)
         {
-          return (_context.Projeto?.Any(e => e.id == id)).GetValueOrDefault();
+          return (_context.Projeto?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

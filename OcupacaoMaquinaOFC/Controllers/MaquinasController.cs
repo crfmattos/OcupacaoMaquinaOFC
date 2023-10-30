@@ -51,7 +51,7 @@ namespace OcupacaoMaquinaOFC.Controllers
         //}
         public void calcularValorHora(Maquina maquina)
         {
-            maquina.valorHora = ((maquina.valorMaquina * 0.10) / 365) / 24;
+            maquina.ValorHora = ((maquina.ValorMaquina * 0.10) / 365) / 24;
         }
 
         private readonly OcupacaoMaquinaOFCContext _context;
@@ -74,11 +74,11 @@ namespace OcupacaoMaquinaOFC.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                maquinas = maquinas.Where(s => s.nome!.Contains(searchString));
+                maquinas = maquinas.Where(s => s.Nome!.Contains(searchString));
             }
 
             return View(await maquinas.ToListAsync());
-                          
+
         }
 
         // GET: Maquinas/Details/5
@@ -90,7 +90,7 @@ namespace OcupacaoMaquinaOFC.Controllers
             }
 
             var maquina = await _context.Maquina
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (maquina == null)
             {
                 return NotFound();
@@ -120,7 +120,10 @@ namespace OcupacaoMaquinaOFC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(maquina);
+            else
+            {
+                return View(maquina);
+            }
         }
 
         // GET: Maquinas/Edit/5
@@ -149,7 +152,7 @@ namespace OcupacaoMaquinaOFC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id, nome,limiteHoras,valorMaquina,valorHora")] Maquina maquina)
         {
-            if (id != maquina.id)
+            if (id != maquina.Id)
             {
                 return NotFound();
             }
@@ -164,7 +167,7 @@ namespace OcupacaoMaquinaOFC.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MaquinaExists(maquina.id))
+                    if (!MaquinaExists(maquina.Id))
                     {
                         return NotFound();
                     }
@@ -187,7 +190,7 @@ namespace OcupacaoMaquinaOFC.Controllers
             }
 
             var maquina = await _context.Maquina
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (maquina == null)
             {
                 return NotFound();
@@ -210,14 +213,14 @@ namespace OcupacaoMaquinaOFC.Controllers
             {
                 _context.Maquina.Remove(maquina);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MaquinaExists(int id)
         {
-          return (_context.Maquina?.Any(e => e.id == id)).GetValueOrDefault();
+            return (_context.Maquina?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
